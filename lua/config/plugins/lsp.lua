@@ -28,6 +28,9 @@ return {
         on_attach = on_attach,
       })
       lspconfig.pyright.setup({
+        settings = {
+          exclude = { "cdk.out/**" }
+        },
         capabilities = capabilities,
         on_attach = on_attach,
       })
