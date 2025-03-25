@@ -1,6 +1,6 @@
 require("config.lazy")
 
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.colorcolumn = "80"
@@ -51,3 +51,16 @@ vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "<leader>jq", ":%!jq '.'<CR>")
 vim.g.grr_ignore_patterns = { '*.log', 'node_modules/', '*.test.js', 'build/',
   "cdk.out/" }
+
+-- Keymaps
+vim.keymap.set("n", "<leader>km", function()
+  vim.cmd("redir @a")
+  vim.cmd("silent map")
+  vim.cmd("redir END")
+  vim.cmd("new")
+  vim.bo.buftype = "nofile"
+  vim.bo.bufhidden = "wipe"
+  vim.bo.swapfile = false
+  vim.cmd("put a")
+  vim.cmd("normal! gg")
+end, { desc = "Show all keymaps in a scratch buffer" })

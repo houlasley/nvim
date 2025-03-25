@@ -14,6 +14,7 @@ return {
           repl_open_cmd = "vertical botright 80 split",
         },
         keymaps = {
+          toggle_repl       = "<leader>rr",
           send_motion       = "<leader>sc",
           visual_send       = "<leader>sc",
           send_file         = "<leader>sf",
