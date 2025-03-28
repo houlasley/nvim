@@ -35,6 +35,11 @@ return {
         on_attach = on_attach,
       })
       lspconfig.ruff.setup({
+        init_options = {
+          settings = {
+            logLevel = 'debug',
+          },
+        },
         settings = {
           ruff = {
             lineLength = 88,
@@ -42,7 +47,15 @@ return {
           },
         },
         on_attach = on_attach,
-      })
+      }
+      )
+
+      vim.keymap.set("n", "<leader>oi", function()
+        vim.lsp.buf.code_action({
+          context = { only = { "source.organizeImports" } },
+          apply = true,
+        })
+      end, { desc = "Organize imports", noremap = true, silent = true })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
@@ -56,6 +69,10 @@ return {
               buffer = args.buf,
               callback = function()
                 vim.lsp.buf.format({ bufnr = args.buf, id = client.id })
+                vim.lsp.buf.code_action({
+                  context = { only = { "source.organizeImports" } },
+                  apply = true,
+                })
               end,
             })
           end
