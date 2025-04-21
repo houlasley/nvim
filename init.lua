@@ -64,3 +64,14 @@ vim.keymap.set("n", "<leader>km", function()
   vim.cmd("put a")
   vim.cmd("normal! gg")
 end, { desc = "Show all keymaps in a scratch buffer" })
+
+
+-- Enable persistent undo
+vim.opt.undofile = true
+
+-- Set a directory to store undo files (adjust as needed)
+local undodir = vim.fn.stdpath("data") .. "/undo"
+vim.opt.undodir = undodir
+
+-- Create the directory if it doesn't exist
+vim.fn.mkdir(undodir, "p")
