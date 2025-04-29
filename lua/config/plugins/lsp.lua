@@ -16,22 +16,46 @@ return {
     local lspconfig = require("lspconfig")
     local capabilities = require("blink-cmp").get_lsp_capabilities()
 
-    local function on_attach(_, bufnr)
+    local function on_attach(client, bufnr)
       local opts = { noremap = true, silent = true, buffer = bufnr }
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+
+      if client.server_capabilities.inlayHintProvider then
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      end
     end
 
     -- Lua
     lspconfig.lua_ls.setup({
       capabilities = capabilities,
       on_attach = on_attach,
+      settings = {
+        Lua = {
+          hint = {
+            enable = true,
+            setType = true,
+            paramType = true,
+            paramName = "All",
+            -- semicolon = "None",
+            -- arrayIndex = "Disable",
+          },
+          diagnostics = {
+            enable = true,
+            globals = { "vim" }
+          }
+        }
+      }
     })
 
     -- Python
     lspconfig.pyright.setup({
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = function(client, bufnr)
+        -- disable formatting from pyright
+        client.server_capabilities.documentFormattingProvider = false
+        on_attach(client, bufnr)
+      end,
     })
 
     -- Golang
@@ -53,11 +77,24 @@ return {
     -- Ruff
     lspconfig.ruff.setup({
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+
+        -- optional: format on save if ruff supports it
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr })
+            end,
+          })
+        end
+      end,
       settings = {
         ruff = {
           lineLength = 88,
           select = { "E", "F", "W", "C90", "I" },
+          format = { enabled = true },
         },
       },
     })
@@ -95,13 +132,16 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client and client.supports_method("textDocument/formatting") then
+        if client and client:supports_method("textDocument/formatting") then
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = args.buf,
             callback = function()
               vim.lsp.buf.format({ bufnr = args.buf })
               vim.lsp.buf.code_action({
-                context = { only = { "source.organizeImports" } },
+                context = {
+                  only = { "source.organizeImports" },
+                  diagnostics = {}
+                },
                 apply = true,
               })
             end,

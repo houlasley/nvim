@@ -75,3 +75,21 @@ vim.opt.undodir = undodir
 
 -- Create the directory if it doesn't exist
 vim.fn.mkdir(undodir, "p")
+
+vim.diagnostic.config(
+  {
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+    severity_sort = true
+  }
+)
+
+local notify_orig = vim.notify
+vim.notify = function(msg, level, opts)
+  if type(msg) == "string" and msg:find("client%.notify") then
+    return
+  end
+  notify_orig(msg, level, opts)
+end
