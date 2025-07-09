@@ -120,14 +120,33 @@ return {
           {
             name = "@vue/typescript-plugin",
             location = vim.fn.getcwd() .. "/node_modules/@vue/typescript-plugin",
-            languages = { "javascript", "typescript", "vue" },
+            languages = { "javascript", "typescript" },
           },
         },
       },
-      filetypes = { "typescript", "javascript", "vue" },
+      filetypes = { "typescript", "javascript" },
       root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
     })
 
+    -- Vue / TypeScript with Volar
+    lspconfig.volar.setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+
+        -- Format on save
+        if client.supports_method("textDocument/formatting") then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr })
+            end,
+          })
+        end
+      end,
+      filetypes = { "vue" },
+      root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
+    })
     -- Auto format + organize imports on save
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
