@@ -5,6 +5,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.colorcolumn = "80"
 vim.opt.clipboard = "unnamedplus"
+vim.opt.swapfile = false
 
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR><cmd>echo 'File Sourced'<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
