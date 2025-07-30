@@ -147,6 +147,23 @@ return {
       filetypes = { "vue" },
       root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", ".git"),
     })
+    -- Rust
+    lspconfig.rust_analyzer.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        ["rust-analyzer"] = {
+          checkOnSave = { command = "clippy" },
+          cargo = { allFeatures = true },
+          inlayHints = {
+            lifetimeElisionHints = { enable = true, useParameterNames = true },
+            bindingModeHints = { enable = true },
+            closureReturnTypeHints = { enable = "always" },
+            expressionAdjustmentHints = { enable = "always" },
+          },
+        },
+      },
+    })
     -- Auto format + organize imports on save
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)

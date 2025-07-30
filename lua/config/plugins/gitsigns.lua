@@ -37,9 +37,6 @@ return {
         row = 0,
         col = 1,
       },
-      yadm                         = {
-        enable = false,
-      },
     }
 
     -- Keybindings using updated nav_hunk API
