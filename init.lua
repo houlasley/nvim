@@ -66,6 +66,11 @@ vim.keymap.set("n", "<leader>km", function()
   vim.cmd("normal! gg")
 end, { desc = "Show all keymaps in a scratch buffer" })
 
+-- Ergonomics
+vim.keymap.set("i", "jk", "<Esc>")
+vim.keymap.set('n', '<leader>w', ':w<CR>') -- save
+vim.keymap.set('n', '<leader>q', ':q<CR>') -- quit
+vim.keymap.set('n', ';', ':', { noremap = true })
 
 -- Enable persistent undo
 vim.opt.undofile = true

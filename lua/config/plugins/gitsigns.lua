@@ -1,3 +1,5 @@
+-- ~/.config/nvim/lua/plugins/gitsigns.lua
+
 return {
   'lewis6991/gitsigns.nvim',
   event = { "BufReadPre", "BufNewFile" },
@@ -48,6 +50,7 @@ return {
       { desc = 'Prev Git hunk' })
     vim.keymap.set('n', '<leader>hs', gs.stage_hunk, { desc = 'Stage hunk' })
     vim.keymap.set('n', '<leader>hr', gs.reset_hunk, { desc = 'Reset hunk' })
+    vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'Undo stage hunk' })
     vim.keymap.set('n', '<leader>hp', gs.preview_hunk, { desc = 'Preview hunk' })
     vim.keymap.set('n', '<leader>hb', function() gs.blame_line { full = true } end,
       { desc = 'Blame line' })

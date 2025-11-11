@@ -12,6 +12,9 @@ return {
           file_ignore_patterns = {
             "^.git/",
             "%.DS_Store",
+            "layer/",
+            "opt/ml/",
+            "opt/1/",
 
           }
         },
@@ -25,16 +28,16 @@ return {
         }
       }
       require('telescope').load_extension('fzf')
-      vim.keymap.set("n", "<space>ff", function()
+      vim.keymap.set("n", "<leader>f", function()
         require('telescope.builtin').find_files { hidden = true }
       end)
-      vim.keymap.set("n", "<space>fh", require('telescope.builtin').help_tags)
-      vim.keymap.set("n", "<space>en", function()
+      vim.keymap.set("n", "<leader>h", require('telescope.builtin').help_tags)
+      vim.keymap.set("n", "<leader>n", function()
         require('telescope.builtin').find_files {
           cwd = vim.fn.stdpath("config")
         }
       end)
-      vim.keymap.set("n", "<space>ep", function()
+      vim.keymap.set("n", "<leader>p", function()
         require('telescope.builtin').find_files {
           cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy")
         }
