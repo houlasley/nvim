@@ -200,6 +200,29 @@ return {
       },
     })
 
+    -- SQLFluff (SQL formatter + linter)
+    lspconfig.sqlfluff.setup({
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        -- SQLFluff only formats, no rename or hovers, so it's safe
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr })
+            end,
+          })
+        end
+
+        on_attach(client, bufnr)
+      end,
+      settings = {
+        sqlfluff = {
+          dialect = "ansi", -- or postgres, bigquery, snowflake, etc.
+        },
+      },
+    })
+
     -- Auto format + organize imports on save
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)

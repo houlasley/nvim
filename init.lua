@@ -7,7 +7,7 @@ vim.opt.colorcolumn = "80"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.swapfile = false
 
-vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR><cmd>echo 'File Sourced'<CR>")
+vim.keymap.set("n", "<space><space>s", "<cmd>source %<CR><cmd>echo 'File Sourced'<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
 vim.keymap.set("v", "<space>x", ":lua<CR>")
 
@@ -31,13 +31,13 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
+-- Bottom Terminal
 local job_id = 0
 vim.keymap.set("n", "<space>st", function()
   vim.cmd.vnew()
   vim.cmd.term()
   vim.cmd.wincmd("J")
-  vim.api.nvim_win_set_height(0, 5)
-
+  vim.api.nvim_win_set_height(0, 7)
   job_id = vim.bo.channel
 end)
 
@@ -53,7 +53,7 @@ vim.keymap.set("n", "<leader>jq", ":%!jq '.'<CR>")
 vim.g.grr_ignore_patterns = { '*.log', 'node_modules/', '*.test.js', 'build/',
   "cdk.out/" }
 
--- Keymaps
+-- Show Keymaps
 vim.keymap.set("n", "<leader>km", function()
   vim.cmd("redir @a")
   vim.cmd("silent map")
@@ -66,11 +66,17 @@ vim.keymap.set("n", "<leader>km", function()
   vim.cmd("normal! gg")
 end, { desc = "Show all keymaps in a scratch buffer" })
 
+
 -- Ergonomics
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set('n', '<leader>w', ':w<CR>') -- save
 vim.keymap.set('n', '<leader>q', ':q<CR>') -- quit
 vim.keymap.set('n', ';', ':', { noremap = true })
+vim.keymap.set("n", "<C-y>", "ggVGy", { noremap = true })
+vim.keymap.set("n", "H", "^", { noremap = true })
+vim.keymap.set("n", "L", "$")
+
+
 
 -- Enable persistent undo
 vim.opt.undofile = true
