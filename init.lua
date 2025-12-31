@@ -74,8 +74,9 @@ vim.keymap.set('n', '<leader>q', ':q<CR>') -- quit
 vim.keymap.set('n', ';', ':', { noremap = true })
 vim.keymap.set("n", "<C-y>", "ggVGy", { noremap = true })
 vim.keymap.set("n", "H", "^", { noremap = true })
-vim.keymap.set("n", "L", "$")
-
+vim.keymap.set("n", "L", "$", { noremap = true })
+vim.keymap.set("v", "H", "^", { noremap = true })
+vim.keymap.set("v", "L", "$", { noremap = true })
 
 
 -- Enable persistent undo
