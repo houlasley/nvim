@@ -15,7 +15,14 @@ local function load_history()
   local content = f:read("*a")
   f:close()
   if content == "" then return {} end
-  return vim.json.decode(content)
+
+  local ok, result = pcall(vim.json.decode, content)
+  if not ok then
+    vim.notify("Keyfreq: Failed to parse history file, resetting", vim.log.levels.WARN)
+    return {}
+  end
+
+  return result
 end
 
 ----------------------------------------------------------
